@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "23347435830",
+    "project_id": "vetplanet-bd7d1",
+    "storage_bucket": "vetplanet-bd7d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23347435830:android:f8af147fa0e0572d1cbb97",
+        "android_client_info": {
+          "package_name": "com.sofist.vetplanet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23347435830-jdp5pfemuk8q4he6sh6somskup979i9v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sofist.vetplanet",
+            "certificate_hash": "5264bc6aa46db96166ea85bdc911ba3b6936d764"
+          }
+        },
+        {
+          "client_id": "23347435830-r1ddnkneoupl67c3svgve3pbqjha2e3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBso9ncdIqcKUoAHLlzezrvejbaG0RecN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23347435830-r1ddnkneoupl67c3svgve3pbqjha2e3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
