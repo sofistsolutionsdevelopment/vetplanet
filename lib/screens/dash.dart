@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplanet/constant/colors.dart';
 import 'package:vetplanet/models/clientProfile_model.dart';
@@ -50,7 +52,7 @@ class _DashPageState extends State<DashPage> {
                       fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
-                      color: Colors.white),
+                      color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -68,12 +70,15 @@ class _DashPageState extends State<DashPage> {
             actions: <Widget>[
               TextButton(
                 // color: Colors.red,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
                     'Yes',
                     style: TextStyle(
-                      color: appColor,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,
@@ -84,12 +89,15 @@ class _DashPageState extends State<DashPage> {
               ),
               TextButton(
                 //  color: Colors.green,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
                     'No',
                     style: TextStyle(
-                      color: appColor,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,
@@ -105,41 +113,19 @@ class _DashPageState extends State<DashPage> {
         });
   }
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String _message = '';
   final List<Message> messages = [];
 
   void getMessage() {
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        final notification = message['notification'];
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      final notification = message.notification;
         setState(() {
           messages.add(Message(
-              title: notification['title'], body: notification['body']));
+              title: notification.title, body: notification.body));
         });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-
-        final notification = message['data'];
-        setState(() {
-          messages.add(Message(
-            title: '${notification['title']}',
-            body: '${notification['body']}',
-          ));
-          print("GETMEASSGAE onLaunch : 1");
-          print("GETMEASSGAE onLaunch : 2");
-        });
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewAppointmentPage()));
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    });
   }
 
   Future<List> _future;
@@ -148,21 +134,21 @@ class _DashPageState extends State<DashPage> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
-    final String apiUrl =
+    final String url =
         "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({"PatientId": _RegistrationId}),
     );
@@ -196,20 +182,20 @@ class _DashPageState extends State<DashPage> {
 
   Future<ClientProfileModel> getClientProfile() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl =
-        "$_API_Path/GetClientDetailsById/GetClientDetailsById";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url =
+        "$apiUrl/GetClientDetailsById/GetClientDetailsById";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({"PatientId": _RegistrationId}),
     );
@@ -252,20 +238,20 @@ class _DashPageState extends State<DashPage> {
 
   Future<NotificationModel> getVETNotifyCount() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    final String apiUrl =
-        "$_API_Path/GetNotificationDoctorCount/GetNotificationDoctorCount";
+    final String url =
+        "$apiUrl/GetNotificationDoctorCount/GetNotificationDoctorCount";
     debugPrint('Check getData 1 ');
     debugPrint('Check _RegistrationId ****************$_RegistrationId ');
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({"PatientId": _RegistrationId}),
     );
@@ -283,20 +269,20 @@ class _DashPageState extends State<DashPage> {
 
   Future<NotificationModel> getGroomingNotifyCount() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    final String apiUrl =
-        "$_API_Path/GetNotificationGroomerCount/GetNotificationGroomerCount";
+    final String url =
+        "$apiUrl/GetNotificationGroomerCount/GetNotificationGroomerCount";
     debugPrint('Check getData 1 ');
     debugPrint('Check _RegistrationId ****************$_RegistrationId ');
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({"PatientId": _RegistrationId}),
     );
@@ -314,21 +300,21 @@ class _DashPageState extends State<DashPage> {
 
   Future<ResultModel> getActiveUsere() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _contactNo = _prefs.getString('contactNo');
-    debugPrint('Check getActiveUsere _API_Path $_API_Path ');
+    debugPrint('Check getActiveUsere apiUrl $apiUrl ');
     debugPrint('Check getActiveUsere _contactNo $_contactNo ');
 
-    final String apiUrl = "$_API_Path/CheckPatientActive/CheckPatientActive";
+    final String url = "$apiUrl/CheckPatientActive/CheckPatientActive";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({"ContactNo": _contactNo}),
     );
@@ -372,9 +358,26 @@ class _DashPageState extends State<DashPage> {
     });
   }
 
+  getLocationPermission()async{
+    bool serviceEnabled;
+    var status = await Permission.location.status;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+    if(status.isDenied){
+      Permission.location.request();
+    }
+    
+
+  }
+
   @override
   void initState() {
     loadActiveUser();
+    getLocationPermission();
     super.initState();
   }
 
@@ -651,26 +654,26 @@ class _DashPageState extends State<DashPage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, left: 10),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              SlideLeftRoute(
-                                page: ProductList("1"),
-                              ));
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 10, left: 10),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           SlideLeftRoute(
+                    //             page: ProductList(),
+                    //           ));
 
-                          // Navigator.push(
-                          //     context, SlideLeftRoute(page: ShopPage()));
-                        },
-                        child: Container(
-                          child: Image.asset(
-                            "assets/petShop.png",
-                          ),
-                        ),
-                      ),
-                    ),
+                    //       // Navigator.push(
+                    //       //     context, SlideLeftRoute(page: ShopPage()));
+                    //     },
+                    //     child: Container(
+                    //       child: Image.asset(
+                    //         "assets/petShop.png",
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

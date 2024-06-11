@@ -48,19 +48,19 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
 
     print("1 ***");
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     print("2 ***");
     print("hostelId *** ${widget.hostelId}");
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -155,21 +155,21 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
 
   Future<ResultModel> payAtHostel(String _from, String _to, String _fromDate, String _toDate) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
     String PetOwnerName = _prefs.getString('PetOwnerName');
     print("sendToTest PetOwnerName *******************$PetOwnerName");
 
-    final String apiUrl = "$_API_Path/SaveHostelSlot/SaveHostelSlot";
+    final String url = "$apiUrl/SaveHostelSlot/SaveHostelSlot";
 
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId":widget.hostelId,
@@ -203,7 +203,7 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
   }
   _displayBookSnackBar(BuildContext context) {
     final snackBar = SnackBar(content:Text('Unable to Book. Please Try again.', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   bool _isInAsyncCall = false;
@@ -218,7 +218,7 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left:1, right:1, top:12, bottom:12),
                 child: Text('Vet Planet',style: TextStyle(fontFamily: "Camphor",
-                    fontWeight: FontWeight.w900,fontSize: 18, color: Colors.white),textAlign:TextAlign.center ,),
+                    fontWeight: FontWeight.w900,fontSize: 18, color: Colors.black),textAlign:TextAlign.center ,),
               ),
             ),
             content: Text('Booked Sucessfully!',style:TextStyle(fontFamily: "Camphor",
@@ -228,7 +228,7 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
                 // color: appColor,
                   child:Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: Text('Ok',style: TextStyle(color: appColor,fontSize: 16,  fontFamily: "Camphor",
+                    child: Text('Ok',style: TextStyle(color: appColorlight,fontSize: 16,  fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,),),
                   ),
                   onPressed: () {
@@ -270,7 +270,7 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
 
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(content: Text('Please select atleast one Service for Pet', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -294,15 +294,12 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
+            backgroundColor: appColorlight,
             flexibleSpace: (Container(
               decoration: BoxDecoration(
+                color: appColorlight,
                 borderRadius: BorderRadius.all(Radius.circular(2)),
-                gradient: LinearGradient(
-                  colors: [appColor, appColor],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-              ),
+               ),
             )),
             elevation: 0,
             iconTheme: IconThemeData(color: Colors.white),
@@ -502,97 +499,90 @@ class _SelectPetForHostelPageState extends State<SelectPetForHostelPage> {
             children: <Widget>[
               if(amount != 0.0)
               Container(
+                margin: EdgeInsets.all(10),
                 height: 50,
                 width: double.infinity,
-                //decoration: BoxDecoration(
+                //decoration: BoxDecoration(s
                 //  border:Border(top: BorderSide(color: Colors.grey, width: 1),),
                 //),
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right:10),
-                      child: InkWell(
-                        onTap: ()async {
-                          if (_formStateKey.currentState.validate()) {
-                            _formStateKey.currentState.save();
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(appColorlight)
+                  ),
+                  onPressed: ()async{
+                    if (_formStateKey.currentState.validate()) {
+                _formStateKey.currentState.save();
       
-                            setState(() {
-                              _isInAsyncCall = true;
-                            });
-                            debugPrint('_fromDate : ${_fromDate}' );
-                            debugPrint('_toDate : $_toDate' );
+                setState(() {
+                  _isInAsyncCall = true;
+                });
+                debugPrint('_fromDate : ${_fromDate}' );
+                debugPrint('_toDate : $_toDate' );
       
-                            if(_fromDate == "Select From Date" && _toDate != "Select To Date"){
-                              setState(() {
-                                _isInAsyncCall = false;
-                              });
-                              final snackBar = SnackBar(content:Text('Please Select From Date', style: TextStyle(fontSize: 20),));
-                              _globalKey.currentState.showSnackBar(snackBar);
-                            }
-                            if(_fromDate != "Select From Date" && _toDate == "Select To Date" ){
-                              setState(() {
-                                _isInAsyncCall = false;
-                              });
-                              final snackBar = SnackBar(content:Text('Please Select To Date', style: TextStyle(fontSize: 20),));
-                              _globalKey.currentState.showSnackBar(snackBar);
-                            }
-                            if(_fromDate == "Select From Date" && _toDate == "Select To Date"){
-                              setState(() {
-                                _isInAsyncCall = false;
-                              });
-                              final snackBar = SnackBar(content:Text('Please Select From Date and To Date', style: TextStyle(fontSize: 20),));
-                              _globalKey.currentState.showSnackBar(snackBar);
-                            }
-                            if(_fromDate != "Select From Date" && _toDate != "Select To Date"){
-                              print("_from : $_from");
-                              print("_to : $_to");
+                if(_fromDate == "Select From Date" && _toDate != "Select To Date"){
+                  setState(() {
+                    _isInAsyncCall = false;
+                  });
+                  final snackBar = SnackBar(content:Text('Please Select From Date', style: TextStyle(fontSize: 20),));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                if(_fromDate != "Select From Date" && _toDate == "Select To Date" ){
+                  setState(() {
+                    _isInAsyncCall = false;
+                  });
+                  final snackBar = SnackBar(content:Text('Please Select To Date', style: TextStyle(fontSize: 20),));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                if(_fromDate == "Select From Date" && _toDate == "Select To Date"){
+                  setState(() {
+                    _isInAsyncCall = false;
+                  });
+                  final snackBar = SnackBar(content:Text('Please Select From Date and To Date', style: TextStyle(fontSize: 20),));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                if(_fromDate != "Select From Date" && _toDate != "Select To Date"){
+                  print("_from : $_from");
+                  print("_to : $_to");
       
-                              final ResultModel result = await payAtHostel(_from, _to, _fromDate, _toDate);
-                              debugPrint('Check Inserted result : $result');
-                              setState(() {
-                                _result = result;
-                              });
+                  final ResultModel result = await payAtHostel(_from, _to, _fromDate, _toDate);
+                  debugPrint('Check Inserted result : $result');
+                  setState(() {
+                    _result = result;
+                  });
       
-                              if (_result.Result == "ADDED" ) {
+                  if (_result.Result == "ADDED" ) {
       
-                                if(widget.token != "-"){
-                                  String token = widget.token;
-                                  debugPrint('Check _saveappointmentresult token : $token');
-                                  sendToTest(token, _fromDate, _toDate);
-                                }
+                    if(widget.token != "-"){
+                      String token = widget.token;
+                      debugPrint('Check _saveappointmentresult token : $token');
+                      sendToTest(token, _fromDate, _toDate);
+                    }
       
-                                debugPrint('SharedPreferences id: ${_result.Id}' );
+                    debugPrint('SharedPreferences id: ${_result.Id}' );
       
-                                approved();
+                    approved();
       
-                                // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInPage()));
-                                //  Navigator.pop(context);
+                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInPage()));
+                    //  Navigator.pop(context);
       
-                              }
-                              else
-                              {
-                                setState(() {
-                                  _isInAsyncCall = false;
-                                });
+                  }
+                  else
+                  {
+                    setState(() {
+                      _isInAsyncCall = false;
+                    });
       
-                                debugPrint('**');
-                                _displaySnackBar(context);
-                              }
+                    debugPrint('**');
+                    _displaySnackBar(context);
+                  }
       
       
-                            }
-                          }
-                        },
-                        child: Container(
-                          color: appColor,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:10, bottom: 10, left: 35, right: 35),
-                            child: Text("Confirm Booking",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                                fontWeight: FontWeight.w900, fontSize: 16),),
-                          ),
-                        ),
-                      ),
-                    )),
+                }
+                }
+                  },
+                  child: Text("Confirm Booking",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+                      fontWeight: FontWeight.w900, fontSize: 16),),
+                ),
               ),
               if(amount == 0.0)
                 Container(),

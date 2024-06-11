@@ -26,14 +26,14 @@ class   LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final _globalKey = GlobalKey<ScaffoldMessengerState>();
-
+  TextEditingController passwordController = TextEditingController();
   bool _isInAsyncCall = false;
 
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   String _contactNo;
   String _password;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String tokenValue = 'Hello World!';
   String _platformImei = 'Unknown';
   String uniqueId = "Unknown";
@@ -42,43 +42,21 @@ class _LogInPageState extends State<LogInPage> {
   final List<Message> messages = [];
 
   void getMessage() {
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        final notification = message['notification'];
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      final notification = message.notification;
         setState(() {
           messages.add(Message(
-              title: notification['title'], body: notification['body']));
+              title: notification.title, body: notification.body));
         });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-
-        final notification = message['data'];
-        setState(() {
-          messages.add(Message(
-            title: '${notification['title']}',
-            body: '${notification['body']}',
-          ));
-          print("GETMEASSGAE onLaunch : 1");
-          print("GETMEASSGAE onLaunch : 2");
-        });
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewAppointmentPage()));
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    });
   }
 
-  //LoginResultModel _result;
+    
 
   _registerOnFirebase() {
-    _firebaseMessaging.subscribeToTopic('all');
-    _firebaseMessaging.getToken().then((token) {
+    FirebaseMessaging.instance.subscribeToTopic('all');
+    FirebaseMessaging.instance.getToken().then((token) {
       //=>    print(token)
       if (token != null) {
         update(token);
@@ -122,29 +100,35 @@ class _LogInPageState extends State<LogInPage> {
   ResultModel _result;
 
   Future<ResultModel> validateUser(
-      String contactNo, String token, String imeiNo) async {
+      String contactNo, String token, String imeiNo,dynamic password) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    
+    debugPrint('Check Inserted apiUrl $apiUrl ');
 
-    final String apiUrl = "$_API_Path/Login/ValidateLogin";
+    final String url = "$apiUrl/Login/ValidateLogin";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+            bearerToken
       },
       body: json.encode({
         "ContactNo": contactNo,
-        "Password": "-",
+        "Password": password,
         "Token": token,
         "ImeiNo": imeiNo
       }),
     );
+    print(json.encode({
+        "ContactNo": contactNo,
+        "Password": password,
+        "Token": token,
+        "ImeiNo": imeiNo
+      }));
     debugPrint('Check Inserted 2 ');
 
     if (response.statusCode == 200) {
@@ -162,7 +146,7 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   Future<String> generateOTP(String contactNo, String otp) async {
-    final String apiUrl =
+    final String url =
         "https://sms.bulkssms.com/submitsms.jsp?user=vetpln&key=1a0ce2bcedXX&mobile=$contactNo&message=OTP%20%3a$otp%0aVet Planet&senderid=ALRTSM&accusage=1";
     debugPrint('Check Inserted 1 ');
 
@@ -188,7 +172,7 @@ class _LogInPageState extends State<LogInPage> {
         fontWeight: FontWeight.w500,
       ),
     ));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   _displaySnackBar(BuildContext context) {
@@ -201,7 +185,7 @@ class _LogInPageState extends State<LogInPage> {
         fontWeight: FontWeight.w500,
       ),
     ));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   Future<String> accountDeactivated() {
@@ -316,13 +300,16 @@ class _LogInPageState extends State<LogInPage> {
             ),
             actions: <Widget>[
               TextButton(
-                //color: Colors.red,
+                // color: Colors.red,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
                     'Yes',
                     style: TextStyle(
-                      color: appColor,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,
@@ -332,13 +319,16 @@ class _LogInPageState extends State<LogInPage> {
                 onPressed: () => exit(0),
               ),
               TextButton(
-                // color: Colors.green,
+                //  color: Colors.green,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
                     'No',
                     style: TextStyle(
-                      color: appColor,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: "Camphor",
                       fontWeight: FontWeight.w900,
@@ -506,6 +496,69 @@ class _LogInPageState extends State<LogInPage> {
                               SizedBox(
                                 height: 30,
                               ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10, right: 10, top: 0, bottom: 0),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  controller: passwordController,
+                                  showCursor: true,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    counterText: "",
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    /*border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                      borderSide: BorderSide(
+                                        width: 0,
+                                        style: BorderStyle.none,
+                                      ),
+                                    ),*/
+                                    //filled: true,
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: Icon(Icons.lock)
+                                    ),
+                                    hintStyle: TextStyle(
+                                        fontFamily: "Camphor",
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        fontSize: 14),
+                                    hintText: "Enter Your Password",
+                                  ),
+                                  validator: (value) {  
+                                    /* if (value.isEmpty) {
+                                      return 'Please Enter Mobile No';
+                                    }*/
+                                    if (value.length == 0 || value.isEmpty) {
+                                      return "Password can not be empty";
+                                    }
+                                    return null;
+                                  },
+                                  style: TextStyle(
+                                      fontFamily: "Camphor",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 16),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
                               InkWell(
                                 onTap: () async {
                                   if (_formStateKey.currentState.validate()) {
@@ -531,16 +584,9 @@ class _LogInPageState extends State<LogInPage> {
                                     _controllerMobileNo.clear();
                                     // _controllerPassword.clear();
 
-                                    String API_Path =
-                                        "http://sofistsolutions.in/VetPlanetAPPAPI/API";
-
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setString('API_Path', API_Path);
-
                                     final ResultModel result =
                                         await validateUser(
-                                            contactNo, token, imeiNo);
+                                            contactNo, token, imeiNo,passwordController.text);
                                     debugPrint(
                                         'Check Inserted result : $result');
                                     setState(() {

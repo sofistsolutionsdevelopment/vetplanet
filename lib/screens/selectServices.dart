@@ -41,20 +41,20 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
 
     print("1 ***");
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetServices/GetServices";
+    final String url = "$apiUrl/GetServices/GetServices";
 
     print("2 ***");
     print("clinicId *** ${widget.clinicId}");
     print("vetId *** ${widget.vetId}");
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -100,18 +100,18 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
 
   Future<ResultModel> savePrePetService(String _serviceId) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
-    final String apiUrl = "$_API_Path/SavePetService/SavePrePetService";
+    final String url = "$apiUrl/SavePetService/SavePrePetService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId":_RegistrationId,
@@ -147,19 +147,19 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
 
   Future<ResultModel> deleteServices() async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeletePrePetService/DeletePrePetService";
+    final String url =  "$apiUrl/DeletePrePetService/DeletePrePetService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId,
@@ -208,7 +208,7 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(content: Text('Please select atleast one Service', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
 
@@ -219,14 +219,11 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: appColorlight,
           flexibleSpace: (Container(
             decoration: BoxDecoration(
+              color: appColorlight,
               borderRadius: BorderRadius.all(Radius.circular(2)),
-              gradient: LinearGradient(
-                colors: [appColor, appColor],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
             ),
           )),
           elevation: 0,
@@ -268,7 +265,7 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
                               title: Text(_resultServices[index].ServiceName,style: TextStyle(fontSize:18, fontFamily: "Camphor",
                                   fontWeight: FontWeight.w700,color: Colors.black),),
                               value: _resultServices[index].IsChecked,
-                              activeColor: appColor,
+                              activeColor: appColorlight,
                               checkColor: Colors.white,
                               onChanged: (val) {
                                 setState(() {
@@ -320,17 +317,15 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
     
     
         bottomNavigationBar: Container(
+          margin: EdgeInsets.all(10),
           height: 50,
           width: double.infinity,
           decoration: BoxDecoration(
-            border:Border(top: BorderSide(color: Colors.grey, width: 1),),),
-          child: Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(right:10),
-                child: InkWell(
-                  onTap: () async {
-                    checkServices = "";
+            ),
+          child: InkWell(
+            onTap: () async {
+              
+              checkServices = "";
     
                     print("AnswerResponseList .................................... : $AnswerResponseListnew");
                     print("AnswerResponseList Length.................................... : ${AnswerResponseListnew.length}");
@@ -395,18 +390,83 @@ class _SelectServicesPageState extends State<SelectServicesPage> {
     
     
     
-    
-                  },
-                  child: Container(
-                    color: appColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top:10, bottom: 10, left: 35, right: 35),
-                      child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                          fontWeight: FontWeight.w900, fontSize: 16),),
-                    ),
-                  ),
+            },
+            child: Container(
+              color: appColor,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: 
+                  MaterialStateProperty.all(appColorlight)
                 ),
-              )),
+                onPressed: ()async{
+                  checkServices = "";
+    
+              print("AnswerResponseList .................................... : $AnswerResponseListnew");
+              print("AnswerResponseList Length.................................... : ${AnswerResponseListnew.length}");
+    
+              final ResultModel deleteServicesResult = await deleteServices();
+              setState(() {
+              _deleteServices = deleteServicesResult;
+              debugPrint('Services in db Successfully : ${_deleteServices.Result}');
+              });
+    
+    
+              if(AnswerResponseListnew.length == 0){
+              _displaySnackBar(context);
+              }
+    
+              if(AnswerResponseListnew.length != 0){
+              for(var i=0; i < AnswerResponseListnew.length; i++) {
+    
+                String _serviceId = AnswerResponseListnew[i][0];
+                String _serviceName = AnswerResponseListnew[i][1];
+    
+                print(" STRING serviceId  ============ : ${_serviceId} ");
+                print(" STRING serviceName  ============ : ${_serviceName} ");
+    
+                checkServices = checkServices + _serviceId  +', ';
+    
+                final ResultModel result = await savePrePetService(_serviceId);
+                debugPrint('2');
+    
+                setState(() {
+                  _result = result;
+                });
+                debugPrint('savePrePetService result : $result');
+    
+                debugPrint('3');
+    
+                if (_result.Result == "ADDED" ) {
+                  debugPrint('****************************************');
+                  _resultServicesList =  getServices();
+                }
+    
+              }
+    
+              String _vetId = widget.vetId;
+              String _clinicId = widget.clinicId;
+              String _checkPet = widget.checkPet;
+              String _token = widget.token;
+              String _amount = widget.amount;
+    
+              print(" checkServices  ============ : ${checkServices} ");
+              print("widget  _vetId  ============ : ${_vetId} ");
+              print("widget  _clinicId  ============ : ${_clinicId} ");
+              print("widget  _checkPet  ============ : ${_checkPet} ");
+              print("widget  _token  ============ : ${_token} ");
+              print("widget  _amount  ============ : ${_amount} ");
+    
+              Navigator.push(context, SlideLeftRoute(page: BookAppointmentPage(clinicId:_clinicId, amount:_amount, vetId:_vetId, checkServices: checkServices, checkPet:_checkPet, token:_token)));
+    
+    
+              }
+    
+                },
+                child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+                    fontWeight: FontWeight.w900, fontSize: 16),),
+              ),
+            ),
+          ),
     
         ),
     

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:23347435830:android:f8af147fa0e0572d1cbb97",
         "android_client_info": {
-          "package_name": "com.sofist.vetplanet"
+          "package_name": "com.sofist.planetofpets"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "23347435830-jdp5pfemuk8q4he6sh6somskup979i9v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.sofist.vetplanet",
+            "package_name": "com.sofist.planetofpets",
             "certificate_hash": "5264bc6aa46db96166ea85bdc911ba3b6936d764"
           }
         },

@@ -47,7 +47,7 @@ class _DrawerPageState extends State<DrawerPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left:1, right:1, top:12, bottom:12),
                 child: Text('Vet Planet',style: TextStyle(fontFamily: "Camphor",
-                    fontWeight: FontWeight.w900,fontSize: 18, color: Colors.white),textAlign:TextAlign.center ,),
+                    fontWeight: FontWeight.w900,fontSize: 18, color: Colors.black),textAlign:TextAlign.center ,),
               ),
             ),
 
@@ -55,10 +55,12 @@ class _DrawerPageState extends State<DrawerPage> {
                 fontWeight: FontWeight.w500,fontSize: 16),),
             actions: <Widget>[
               TextButton(
-                // color: Colors.red,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: Text('Logout',style: TextStyle(color: appColor,fontSize: 16,  fontFamily: "Camphor",
+                  child: Text('Logout',style: TextStyle(color: Colors.white,fontSize: 16,  fontFamily: "Camphor",
                     fontWeight: FontWeight.w900,),),
                 ),
                 onPressed: () async{
@@ -70,11 +72,13 @@ class _DrawerPageState extends State<DrawerPage> {
                 // onPressed: ()=> exit(0),
 
               ),
-              TextButton(
-                //color: Colors.green,
+              TextButton( 
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: Text('Cancel',style: TextStyle(color: appColor,fontSize: 16, fontFamily: "Camphor",
+                  child: Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 16, fontFamily: "Camphor",
                     fontWeight: FontWeight.w900,),),
                 ),
                 onPressed: () {
@@ -93,18 +97,18 @@ class _DrawerPageState extends State<DrawerPage> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -178,7 +182,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         elevation: 10,
                         child: Padding(padding: EdgeInsets.all(8.0),
-                          child: Image.asset("assets/logo.png", height: 90, width: 90),
+                          child: Image.asset("assets/logo/POPLogo.png", height: 90, width: 90),
                         ),
                       ),
 

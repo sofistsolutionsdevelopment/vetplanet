@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vetplanet/constant/colors.dart';
@@ -51,16 +50,16 @@ class _HostelDetailsState extends State<HostelDetails> {
   Future<HostelModel> getHostelDetails() async{
     final _prefs = await SharedPreferences.getInstance();
     String _RegistrationId = _prefs.getInt('id').toString();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetHostelDetailsByHostelId/GetHostelDetailsByHostelId";
+    
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetHostelDetailsByHostelId/GetHostelDetailsByHostelId";
 
     debugPrint('Check Inserted 1 ');
     debugPrint('Check Inserted widget.userKey : ${widget.userKey} ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId":widget.userKey,
@@ -130,15 +129,15 @@ class _HostelDetailsState extends State<HostelDetails> {
   String _hostelServicesLenght = "";
   Future<List<HostelServicesModel>> getHostelServices() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetHostelServices/GetHostelServices";
+    
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetHostelServices/GetHostelServices";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId":widget.userKey
@@ -180,18 +179,18 @@ class _HostelDetailsState extends State<HostelDetails> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -272,18 +271,18 @@ class _HostelDetailsState extends State<HostelDetails> {
 
   Future<List<HostelCommentModel>> getComment() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetHostelCommentList/GetHostelCommentList";
+    final String url = "$apiUrl/GetHostelCommentList/GetHostelCommentList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId":widget.userKey,
@@ -325,18 +324,18 @@ class _HostelDetailsState extends State<HostelDetails> {
 
   Future<ResultModel> saveRating(String rating) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
-    final String apiUrl = "$_API_Path/SaveHostelRating/SaveHostelRating";
+    final String url = "$apiUrl/SaveHostelRating/SaveHostelRating";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
           "PatientId":_RegistrationId,
@@ -381,14 +380,14 @@ class _HostelDetailsState extends State<HostelDetails> {
   List<String> listGalleryPhotos = List<String>();
   Future<List<GalleryPhotosModel>> getGalleryPhotos() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check getGalleryPhotos _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetHostelPhotos/GetHostelPhotos";
+    
+    debugPrint('Check getGalleryPhotos apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetHostelPhotos/GetHostelPhotos";
 
     debugPrint('Check getGalleryPhotos 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId": userKey
@@ -440,19 +439,19 @@ class _HostelDetailsState extends State<HostelDetails> {
 
   Future<ResultModel> deleteServices() async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeleteTempHostelService/DeleteTempHostelService";
+    final String url =  "$apiUrl/DeleteTempHostelService/DeleteTempHostelService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId
@@ -483,19 +482,19 @@ class _HostelDetailsState extends State<HostelDetails> {
 
   Future<ResultModel> deletePreServices(String hostelId) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeletePreHostelService/DeletePreHostelService";
+    final String url =  "$apiUrl/DeletePreHostelService/DeletePreHostelService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId,

@@ -4,19 +4,14 @@ import 'dart:math';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplanet/constant/colors.dart';
 import 'package:vetplanet/models/comment_model.dart';
-import 'package:vetplanet/models/notification_model.dart';
 import 'package:vetplanet/screens/dash.dart';
 import 'dart:io';
-import 'package:vetplanet/models/groomingShop_model.dart';
 import 'package:vetplanet/screens/drawer.dart';
 import 'package:vetplanet/screens/groomingDetails.dart';
-import 'package:vetplanet/screens/sendComments.dart';
 import 'package:vetplanet/screens/sendComments_forGroomer.dart';
-import 'package:vetplanet/screens/vetDetails.dart';
 import 'dash.dart';
 
 class AllCommentsGroomersPage extends StatefulWidget {
@@ -38,18 +33,18 @@ class _AllCommentsGroomersPageState extends State<AllCommentsGroomersPage> {
 
   Future<List<CommentModel>> getComment() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetGroomerCommentList/GetGroomerCommentList";
+    final String url = "$apiUrl/GetGroomerCommentList/GetGroomerCommentList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "GroomerId": widget.userKey,

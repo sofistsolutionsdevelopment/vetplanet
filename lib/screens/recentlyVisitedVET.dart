@@ -44,17 +44,17 @@ class _RecentlyVisitedVETPageState extends State<RecentlyVisitedVETPage> {
 
   Future<List<VetModel>> getVet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetRecentlyDoctorList/GetRecentlyDoctorList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetRecentlyDoctorList/GetRecentlyDoctorList";
 
     debugPrint('Check Inserted 1 ');
     debugPrint('Check Inserted _RegistrationId : $_RegistrationId ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId":_RegistrationId
@@ -100,18 +100,18 @@ class _RecentlyVisitedVETPageState extends State<RecentlyVisitedVETPage> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -207,14 +207,11 @@ class _RecentlyVisitedVETPageState extends State<RecentlyVisitedVETPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: appColorlight,
           flexibleSpace: (Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(2)),
-              gradient: LinearGradient(
-                colors: [appColor, appColor],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: appColorlight
             ),
           )),
           elevation: 0,
@@ -351,50 +348,43 @@ class _RecentlyVisitedVETPageState extends State<RecentlyVisitedVETPage> {
                                   Divider(),
                                   Align(
                                       alignment: Alignment.centerRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(right:10),
-                                        child: InkWell(
-                                          onTap:(){
-                                            if(_petLenght == "0"){
-                                              //Navigator.push(context, SlideLeftRoute(page: VetRegistration()));\
-
-                                              addPet();
-
-                                            }
-                                            if(_petLenght == "1"){
-
-
-                                              String onePet = _onePet;
-
-                                              String vetId = "${_vet[index].UserKey}".toString();
-                                              String token = "${_vet[index].Token}".toString();
-
-                                              print("_petLenght == 1 onePet : $onePet");
-                                              print("_petLenght == 1 vetId : $vetId");
-                                              print("_petLenght == 1 token : $token");
-
-                                              Navigator.push(context, SlideLeftRoute(page: SelectClinicPage(vetId:vetId, checkPet:onePet, token:token)));
-                                            }
-                                            if(_petLenght != "1" && _petLenght != "0"){
-
-                                              String vetId = "${_vet[index].UserKey}".toString();
-                                              String token = "${_vet[index].Token}".toString();
-
-                                              print("_petLenght == 0&1 vetId : $vetId");
-                                              print("_petLenght == 0&1 token : $token");
-                                              Navigator.push(context, SlideLeftRoute(page: SelectPetPage(vetId:vetId,  token:token)));
-                                            }
-
-                                          },
-                                          child: Card(
-                                              color:appColor,
-                                              //color:Color(0xffFEC63D),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(right:35, left: 35, bottom: 15, top: 15),
-                                                child: Text("Book Appointment",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                                                    fontWeight: FontWeight.w900, fontSize: 15),),
-                                              )),
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all(appColorlight)
                                         ),
+                                        onPressed: (){
+                                          if(_petLenght == "0"){
+                                      //Navigator.push(context, SlideLeftRoute(page: VetRegistration()));\
+
+                                      addPet();
+
+                                      }
+                                      if(_petLenght == "1"){
+
+
+                                      String onePet = _onePet;
+
+                                      String vetId = "${_vet[index].UserKey}".toString();
+                                      String token = "${_vet[index].Token}".toString();
+
+                                      print("_petLenght == 1 onePet : $onePet");
+                                      print("_petLenght == 1 vetId : $vetId");
+                                      print("_petLenght == 1 token : $token");
+
+                                      Navigator.push(context, SlideLeftRoute(page: SelectClinicPage(vetId:vetId, checkPet:onePet, token:token)));
+                                      }
+                                      if(_petLenght != "1" && _petLenght != "0"){
+
+                                      String vetId = "${_vet[index].UserKey}".toString();
+                                      String token = "${_vet[index].Token}".toString();
+
+                                      print("_petLenght == 0&1 vetId : $vetId");
+                                      print("_petLenght == 0&1 token : $token");
+                                      Navigator.push(context, SlideLeftRoute(page: SelectPetPage(vetId:vetId,  token:token)));
+                                      }
+                                        },
+                                        child: Text("Book Appointment",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+                                            fontWeight: FontWeight.w900, fontSize: 15),),
                                       )),
                                   SizedBox(height: 5,),
                                   Divider(

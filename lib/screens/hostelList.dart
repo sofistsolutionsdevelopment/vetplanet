@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +42,7 @@ class _HostelListPageState extends State<HostelListPage> {
     setState(() {});
   }
 
- // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+//  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress = "null";
   String _latitude="";
@@ -67,31 +68,31 @@ class _HostelListPageState extends State<HostelListPage> {
         print('lat_d *****************************************************************************: $lat_d');
         print('long_d *****************************************************************************: $long_d');
       }
-    //  _getAddressFromLatLng();
+     _getAddressFromLatLng();
     }).catchError((e) {
       print(e);
     });
   }
 
-  // _getAddressFromLatLng() async {
-  //   try {
-  //     List<Placemark> p = await geolocator.placemarkFromCoordinates(
-  //         _currentPosition.latitude, _currentPosition.longitude);
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
 
-  //     Placemark place = p[0];
+      Placemark place = p[0];
 
-  //     setState(() {
-  //       _currentAddress = "${place.subLocality}";
-  //       ///
-  //       //"${place.name},${place.subThoroughfare},${place.subAdministrativeArea},${place.subLocality},${place.thoroughfare},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
-  //       //"${place.locality}, ${place.postalCode}, ${place.country}";
+      setState(() {
+        _currentAddress = "${place.subLocality}";
+        ///
+        //"${place.name},${place.subThoroughfare},${place.subAdministrativeArea},${place.subLocality},${place.thoroughfare},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+        //"${place.locality}, ${place.postalCode}, ${place.country}";
 
-  //      hostelList();
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+       hostelList();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void hostelList() async {
     final String latitude = _latitude;
@@ -113,18 +114,18 @@ class _HostelListPageState extends State<HostelListPage> {
 
   Future<List<HostelModel>> getHostel(String _latitude, String longitude, String currentAddress) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetHostelList/GetHostelList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetHostelList/GetHostelList";
 
     debugPrint('Check Inserted 1 ');
     debugPrint('Check Inserted _latitude : $_latitude ');
     debugPrint('Check Inserted longitude : $longitude ');
     debugPrint('Check Inserted currentAddress : $currentAddress ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "Lat":_latitude,
@@ -172,18 +173,18 @@ class _HostelListPageState extends State<HostelListPage> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -262,19 +263,19 @@ class _HostelListPageState extends State<HostelListPage> {
 
   Future<ResultModel> deleteServices() async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeleteTempHostelService/DeleteTempHostelService";
+    final String url =  "$apiUrl/DeleteTempHostelService/DeleteTempHostelService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId
@@ -305,19 +306,19 @@ class _HostelListPageState extends State<HostelListPage> {
 
   Future<ResultModel> deletePreServices(String hostelId) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeletePreHostelService/DeletePreHostelService";
+    final String url =  "$apiUrl/DeletePreHostelService/DeletePreHostelService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId,

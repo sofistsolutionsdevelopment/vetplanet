@@ -76,14 +76,11 @@ class _DateSelectionForHistoryPageState extends State<DateSelectionForHistoryPag
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: appColorlight,
         flexibleSpace: (Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(2)),
-            gradient: LinearGradient(
-              colors: [appColor, appColor],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            color: appColorlight
           ),
         )),
         elevation: 0,
@@ -167,15 +164,15 @@ class _DateSelectionForHistoryPageState extends State<DateSelectionForHistoryPag
 
                       if(_fromDate == "Select From Date" && _toDate != "Select To Date"){
                         final snackBar = SnackBar(content:Text('Please Select From Date', style: TextStyle(fontSize: 20),));
-                        _globalKey.currentState.showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                       if(_fromDate != "Select From Date" && _toDate == "Select To Date" ){
                         final snackBar = SnackBar(content:Text('Please Select To Date', style: TextStyle(fontSize: 20),));
-                        _globalKey.currentState.showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                       if(_fromDate == "Select From Date" && _toDate == "Select To Date"){
                         final snackBar = SnackBar(content:Text('Please Select From Date and To Date', style: TextStyle(fontSize: 20),));
-                        _globalKey.currentState.showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                       if(_fromDate != "Select From Date" && _toDate != "Select To Date"){
                         //_futuregSOAPNote = getSOAPNote(_from,_to);

@@ -34,18 +34,18 @@ class _SelectPetPageState extends State<SelectPetPage> {
   String _petLenght = "";
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -89,19 +89,19 @@ class _SelectPetPageState extends State<SelectPetPage> {
 
     print("1 ***");
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     print("2 ***");
     print("vetId *** ${widget.vetId}");
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -151,7 +151,7 @@ class _SelectPetPageState extends State<SelectPetPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(content: Text('Please select atleast one Pet', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -159,18 +159,14 @@ class _SelectPetPageState extends State<SelectPetPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: appColorlight,
         flexibleSpace: (Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(2)),
-            gradient: LinearGradient(
-              colors: [appColor, appColor],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            color: appColorlight
           ),
         )),
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         title:
         Text("", style: TextStyle(fontSize:22, fontFamily: "Camphor",
@@ -209,7 +205,7 @@ class _SelectPetPageState extends State<SelectPetPage> {
                             child: ListTile(
                               trailing: Checkbox(
                                 value: _resultPet[index].IsChecked,
-                                activeColor: appColor,
+                                activeColor: appColorlight,
                                 checkColor: Colors.white,
                                 onChanged: (val) {
                                   setState(() {
@@ -275,83 +271,75 @@ class _SelectPetPageState extends State<SelectPetPage> {
       ]),
 
       bottomNavigationBar: Container(
+        margin: EdgeInsets.all(14),
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          border:Border(top: BorderSide(color: Colors.grey, width: 1),),),
-        child: Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(right:10),
-              child: InkWell(
-                onTap: () async {
-                  checkPet = "";
-                  // Navigator.push(context, SlideLeftRoute(page: DashPage()));
+          ),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(appColorlight)
+          ),
+          onPressed: (){
+             checkPet = "";
+        // Navigator.push(context, SlideLeftRoute(page: DashPage()));
 
-                  print("AnswerResponseList .................................... : $AnswerResponseListnew");
-                  print("AnswerResponseList Length.................................... : ${AnswerResponseListnew.length}");
+        print("AnswerResponseList .................................... : $AnswerResponseListnew");
+        print("AnswerResponseList Length.................................... : ${AnswerResponseListnew.length}");
 
-                  if(AnswerResponseListnew.length == 0){
-                    _displaySnackBar(context);
-                  }
-                  if(AnswerResponseListnew.length != 0){
-                    for(var i=0; i < AnswerResponseListnew.length; i++) {
-                      print(
-                          "AnswerResponseListnew[i] ================================ : ${AnswerResponseListnew[i]} ");
+        if(AnswerResponseListnew.length == 0){
+        _displaySnackBar(context);
+        }
+        if(AnswerResponseListnew.length != 0){
+        for(var i=0; i < AnswerResponseListnew.length; i++) {
+          print(
+              "AnswerResponseListnew[i] ================================ : ${AnswerResponseListnew[i]} ");
 
-                      var AnswerResponse = AnswerResponseListnew;
+          var AnswerResponse = AnswerResponseListnew;
 
-                      print(
-                          "AnswerResponse*******====******* : ${AnswerResponse}");
-
-
-                      String _petId = AnswerResponseListnew[i][0];
-                      String _petName = AnswerResponseListnew[i][1];
-
-                      print(" STRING serviceId  ============ : ${_petId} ");
-                      print(" STRING serviceName  ============ : ${_petName} ");
-
-                      checkPet = checkPet + _petId  +', ';
+          print(
+              "AnswerResponse*******====******* : ${AnswerResponse}");
 
 
-                      // final String result = await markHODApproval(empAttnCode, hodApprovedValue);
+          String _petId = AnswerResponseListnew[i][0];
+          String _petName = AnswerResponseListnew[i][1];
 
-                      /*     if(result == "Success")
-                {
-                  _resultEmpAttList =  empAttListData();
-                }
-                else
-                {
-                  Toast.show("Error", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                }
+          print(" STRING serviceId  ============ : ${_petId} ");
+          print(" STRING serviceName  ============ : ${_petName} ");
+
+          checkPet = checkPet + _petId  +', ';
+
+
+          // final String result = await markHODApproval(empAttnCode, hodApprovedValue);
+
+          /*     if(result == "Success")
+        {
+        _resultEmpAttList =  empAttListData();
+        }
+        else
+        {
+        Toast.show("Error", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }
 */
-                    }
+        }
 
-                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                    //prefs.setString('checkPet', checkPet);
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        //prefs.setString('checkPet', checkPet);
 
-                    String _vetId = widget.vetId;
-                    String _token = widget.token;
+        String _vetId = widget.vetId;
+        String _token = widget.token;
 
 
-                    print("  checkServices  ============ : ${checkPet} ");
-                    print(" widget _vetId  ============ : ${_vetId} ");
-                    print(" widget _token  ============ : ${_token} ");
-                    Navigator.push(context, SlideLeftRoute(page: SelectClinicPage(vetId:_vetId, checkPet: checkPet, token:_token)));
+        print("  checkServices  ============ : ${checkPet} ");
+        print(" widget _vetId  ============ : ${_vetId} ");
+        print(" widget _token  ============ : ${_token} ");
+        Navigator.push(context, SlideLeftRoute(page: SelectClinicPage(vetId:_vetId, checkPet: checkPet, token:_token)));
 
-                  }
-
-                },
-                child: Container(
-                  color: appColor,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:10, bottom: 10, left: 35, right: 35),
-                    child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                        fontWeight: FontWeight.w900, fontSize: 16),),
-                  ),
-                ),
-              ),
-            )),
+        }
+          },
+          child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+              fontWeight: FontWeight.w900, fontSize: 16),),
+        ),
 
       ),
 

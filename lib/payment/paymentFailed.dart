@@ -28,14 +28,11 @@ class _FailedPageState extends State<FailedPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: appColorlight,
           flexibleSpace: (Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(2)),
-              gradient: LinearGradient(
-                colors: [appColor, appColor],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: appColorlight
             ),
           )),
           elevation: 0,

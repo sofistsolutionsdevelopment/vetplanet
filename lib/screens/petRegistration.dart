@@ -47,17 +47,18 @@ class _PetRegistrationState extends State<PetRegistration> {
   String _color = "";
   String _gender = "Male";
   String _photograph;
-  File selectedPhotograph;
+  XFile selectedPhotograph;
   Response responsePhotograph;
   String progressPhotograph;
   Dio dioPhotograph = new Dio();
+  final ImagePicker _picker = ImagePicker();
 
 
   _photoFromCamera() async {
     setState(() {
       _photograph = null;
     });
-    selectedPhotograph = await  ImagePicker.pickImage(
+    selectedPhotograph = await  _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50
     );
 
@@ -82,7 +83,7 @@ class _PetRegistrationState extends State<PetRegistration> {
     setState(() {
       _photograph = null;
     });
-    selectedPhotograph = await  ImagePicker.pickImage(
+    selectedPhotograph = await  _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50
     );
 
@@ -104,8 +105,8 @@ class _PetRegistrationState extends State<PetRegistration> {
 
   uploadPhotograph() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    
+    debugPrint('Check Inserted apiUrl $apiUrl ');
 
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     print ("now ****************************************************** $now");
@@ -130,7 +131,7 @@ class _PetRegistrationState extends State<PetRegistration> {
     responsePhotograph = await dioPhotograph.post(
       uploadurl,
       data: formdata,
-      options: Options(headers: <String, dynamic>{HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'}),
+      options: Options(headers: <String, dynamic>{HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken}),
       onSendProgress: (int sent, int total) {
         String percentagePanCard = (sent / total * 100).toStringAsFixed(2);
         progressPhotograph = percentagePanCard + " % uploaded";
@@ -190,16 +191,16 @@ class _PetRegistrationState extends State<PetRegistration> {
   Future<SpeciesModel> getSpecies() async{
 
     //final _prefs = await SharedPreferences.getInstance();
-   // String _API_Path = _prefs.getString('API_Path');
-   // debugPrint('Check Inserted _API_Path $_API_Path ');
+   // 
+   // debugPrint('Check Inserted apiUrl $apiUrl ');
 
 
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetSpecies/GetSpecies";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetSpecies/GetSpecies";
 
    // final response = await http.post(apiUrl);
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
     );
     if(response.statusCode == 200){
       final String responseString = response.body;
@@ -221,12 +222,12 @@ class _PetRegistrationState extends State<PetRegistration> {
 
     debugPrint('Check getBreed speciesId $speciesId ');
 
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetBreedBySpecies/GetBreedBySpecies";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetBreedBySpecies/GetBreedBySpecies";
     debugPrint('Check getBreed 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "speciesId":speciesId
@@ -255,20 +256,20 @@ class _PetRegistrationState extends State<PetRegistration> {
   ResultModel _result;
 
   Future<ResultModel> registerPet(String petName, String dob, String age, String species, String breed, String color, String gender, String photograph ) async{
-   // final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/SavePet/SavePet";
+   // final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/SavePet/SavePet";
 
     debugPrint('Check Inserted 1 ');
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    
+    debugPrint('Check Inserted apiUrl $apiUrl');
 
-    final String apiUrl =  "$_API_Path/SavePet/SavePet";
+    final String url =  "$apiUrl/SavePet/SavePet";
      String id = _prefs.getInt('id').toString();
      debugPrint('Check Inserted id $id ');
     debugPrint('Check Inserted dob $dob ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId":id,
@@ -310,18 +311,18 @@ class _PetRegistrationState extends State<PetRegistration> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId

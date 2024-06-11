@@ -67,31 +67,31 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
         print('lat_d *****************************************************************************: $lat_d');
         print('long_d *****************************************************************************: $long_d');
       }
-   //   _getAddressFromLatLng();
+     _getAddressFromLatLng();
     }).catchError((e) {
       print(e);
     });
   }
 
-  // _getAddressFromLatLng() async {
-  //   try {
-  //     List<Placemark> p = await geolocator.placemarkFromCoordinates(
-  //         _currentPosition.latitude, _currentPosition.longitude);
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
 
-  //     Placemark place = p[0];
+      Placemark place = p[0];
 
-  //     setState(() {
-  //       _currentAddress = "${place.subLocality}";
+      setState(() {
+        _currentAddress = "${place.subLocality}";
 
-  //       //"${place.name},${place.subThoroughfare},${place.subAdministrativeArea},${place.subLocality},${place.thoroughfare},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
-  //       //"${place.locality}, ${place.postalCode}, ${place.country}";
+        //"${place.name},${place.subThoroughfare},${place.subAdministrativeArea},${place.subLocality},${place.thoroughfare},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+        //"${place.locality}, ${place.postalCode}, ${place.country}";
 
-  //       vetList();
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+        vetList();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void vetList() async {
     final String latitude = _latitude;
@@ -114,10 +114,10 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
 
   Future<List<VetModel>> getVet(String _latitude, String longitude, String currentAddress, String operation) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetVetList/GetVetList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetVetList/GetVetList";
 
     debugPrint('Check Inserted 1 ');
     debugPrint('Check Inserted _latitude : $_latitude ');
@@ -126,8 +126,8 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
     debugPrint('Check Inserted operation : $operation ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "Lat":_latitude,
@@ -177,18 +177,18 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
 
   Future<List<PetModel>> getPet() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/GetPetList/GetPetList";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -267,18 +267,18 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
 
   Future<ResultModel> saveRating(String vetId, String rating) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
-    final String apiUrl = "$_API_Path/SaveRating/SaveRating";
+    final String url = "$apiUrl/SaveRating/SaveRating";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId":_RegistrationId,
@@ -591,8 +591,13 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
                                           alignment: Alignment.centerRight,
                                           child: Padding(
                                             padding: const EdgeInsets.only(right:10),
-                                            child: InkWell(
-                                              onTap:(){
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all(
+                                                  appColorlight
+                                                )
+                                              ),
+                                              onPressed: (){
                                                 if(_petLenght == "0"){
                                                   //Navigator.push(context, SlideLeftRoute(page: VetRegistration()));\
 
@@ -622,16 +627,9 @@ class _VeterinaryListPageState extends State<VeterinaryListPage> {
                                                   print("_petLenght == 0&1 token : $token");
                                                   Navigator.push(context, SlideLeftRoute(page: SelectPetPage(vetId:vetId,  token:token)));
                                                 }
-
                                               },
-                                              child: Card(
-                                                  color:appColor,
-                                                  //color:Color(0xffFEC63D),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(right:35, left: 35, bottom: 15, top: 15),
-                                                    child: Text("Book Appointment",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                                                        fontWeight: FontWeight.w900, fontSize: 15),),
-                                                  )),
+                                              child: Text("Book Appointment",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+                                                  fontWeight: FontWeight.w900, fontSize: 15),),
                                             ),
                                           )),
                                       SizedBox(height: 5,),

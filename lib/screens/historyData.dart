@@ -184,15 +184,15 @@ class _HistoryPageState extends State<HistoryPage> {
       
                         if(_fromDate == "Select From Date" && _toDate != "Select To Date"){
                           final snackBar = SnackBar(content:Text('Please Select From Date', style: TextStyle(fontSize: 20),));
-                          _globalKey.currentState.showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                         if(_fromDate != "Select From Date" && _toDate == "Select To Date" ){
                           final snackBar = SnackBar(content:Text('Please Select To Date', style: TextStyle(fontSize: 20),));
-                          _globalKey.currentState.showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                         if(_fromDate == "Select From Date" && _toDate == "Select To Date"){
                           final snackBar = SnackBar(content:Text('Please Select From Date and To Date', style: TextStyle(fontSize: 20),));
-                          _globalKey.currentState.showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                         if(_fromDate != "Select From Date" && _toDate != "Select To Date"){
       

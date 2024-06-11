@@ -49,19 +49,19 @@ class _SelectPetForGroomingPageState extends State<SelectPetForGroomingPage> {
 
     print("1 ***");
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetPetList/GetPetList";
+    final String url = "$apiUrl/GetPetList/GetPetList";
 
     print("2 ***");
     print("vetId *** ${widget.groomingId}");
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId": _RegistrationId
@@ -112,7 +112,7 @@ class _SelectPetForGroomingPageState extends State<SelectPetForGroomingPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(content: Text('Please select atleast one Service for Pet', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -128,14 +128,11 @@ class _SelectPetForGroomingPageState extends State<SelectPetForGroomingPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: appColorlight,
           flexibleSpace: (Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(2)),
-              gradient: LinearGradient(
-                colors: [appColor, appColor],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: appColorlight
             ),
           )),
           elevation: 0,
@@ -275,43 +272,36 @@ class _SelectPetForGroomingPageState extends State<SelectPetForGroomingPage> {
 
         bottomNavigationBar: Container(
           height: 50,
+          margin: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
-            border:Border(top: BorderSide(color: Colors.grey, width: 1),),),
-          child: Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(right:10),
-                child: InkWell(
-                  onTap: () async {
-                    if(serviceSelected == "NoServicesSelected"){
-                      _displaySnackBar(context);
-                    }
-                    if(serviceSelected == "ServicesSelected"){
-                      String _groomingId = widget.groomingId;
-                      String _shopId = widget.shopId;
-                      String _token = widget.token;
-                      String _amount = amount.toString();
+            ),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(appColorlight)
+            ),
+            onPressed: (){
+              if(serviceSelected == "NoServicesSelected"){
+          _displaySnackBar(context);
+          }
+          if(serviceSelected == "ServicesSelected"){
+          String _groomingId = widget.groomingId;
+          String _shopId = widget.shopId;
+          String _token = widget.token;
+          String _amount = amount.toString();
 
-                      print("widget  _groomingId  ============ : ${_groomingId} ");
-                      print("widget  _shopId  ============ : ${_shopId} ");
-                      print("widget  _token  ============ : ${_token} ");
-                      print("widget  _amount  ============ : ${_amount} ");
+          print("widget  _groomingId  ============ : ${_groomingId} ");
+          print("widget  _shopId  ============ : ${_shopId} ");
+          print("widget  _token  ============ : ${_token} ");
+          print("widget  _amount  ============ : ${_amount} ");
 
-                      Navigator.push(context, SlideLeftRoute(page: GroomingBookAppointmentPage(shopId:_shopId, groomingId:_groomingId, token:_token, amount:_amount)));
+          Navigator.push(context, SlideLeftRoute(page: GroomingBookAppointmentPage(shopId:_shopId, groomingId:_groomingId, token:_token, amount:_amount)));
 
-                    }
-                  },
-                  child: Container(
-                    color: appColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top:10, bottom: 10, left: 35, right: 35),
-                      child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
-                          fontWeight: FontWeight.w900, fontSize: 16),),
-                    ),
-                  ),
-                ),
-              )),
+          }
+            },
+            child: Text("Continue",style: TextStyle(color: Colors.white,fontFamily: "Camphor",
+                fontWeight: FontWeight.w900, fontSize: 16),),
+          ),
 
         ),
 

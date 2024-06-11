@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:ext_storage/ext_storage.dart';
+// import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -44,9 +44,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _soapLenght = "";
   Future<List<SOAPNoteModel>> getSOAPNote() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -54,12 +54,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetSoapNote/GetSoapNote";
+    final String url = "$apiUrl/GetSoapNote/GetSoapNote";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -101,9 +101,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _physicalExamLenght = "";
   Future<List<PhysicalExamModel>> getPhysicalExam() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -111,12 +111,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetPhysicalExam/GetPhysicalExam";
+    final String url = "$apiUrl/GetPhysicalExam/GetPhysicalExam";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -159,9 +159,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _ophtoLenght = "";
   Future<List<OPHTOModel>> getOphto() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -169,12 +169,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetOptho/GetOptho";
+    final String url = "$apiUrl/GetOptho/GetOptho";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -218,9 +218,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _ophtoLenghtDATA = "";
   Future<List<OPHTOModel>> getOphtoDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -229,12 +229,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted date ${Date}');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetOptho/GetOptho";
+    final String url = "$apiUrl/GetOptho/GetOptho";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -278,9 +278,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _lamenessLenght = "";
   Future<List<LamenesssModel>> getLameness() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -288,12 +288,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetLameness/GetLameness";
+    final String url = "$apiUrl/GetLameness/GetLameness";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -337,9 +337,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _lamenessLenghtDATA = "";
   Future<List<LamenesssModel>> getLamenessDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -347,12 +347,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetLameness/GetLameness";
+    final String url = "$apiUrl/GetLameness/GetLameness";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -396,9 +396,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _neuroSpinalLenght = "";
   Future<List<NeuroSpinalModel>> getNeuroSpinal() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -406,12 +406,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetNeuroSpinal/GetNeuroSpinal";
+    final String url = "$apiUrl/GetNeuroSpinal/GetNeuroSpinal";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -455,9 +455,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _neuroSpinalLenghtDATA = "";
   Future<List<NeuroSpinalModel>> getNeuroSpinalDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -465,12 +465,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetNeuroSpinal/GetNeuroSpinal";
+    final String url = "$apiUrl/GetNeuroSpinal/GetNeuroSpinal";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -514,9 +514,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _operativeLenght = "";
   Future<List<OperativeModel>> getOperative() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -524,12 +524,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetOperative/GetOperative";
+    final String url = "$apiUrl/GetOperative/GetOperative";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -572,9 +572,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _operativeLenghtDATA = "";
   Future<List<OperativeModel>> getOperativeDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -582,12 +582,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetOperative/GetOperative";
+    final String url = "$apiUrl/GetOperative/GetOperative";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -631,9 +631,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _dermatoLenght = "";
   Future<List<DermatoModel>> getDermato() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -641,12 +641,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetDermato/GetDermato";
+    final String url = "$apiUrl/GetDermato/GetDermato";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -689,9 +689,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _dermatoLenghtDATA = "";
   Future<List<DermatoModel>> getDermatoDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -699,12 +699,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetDermato/GetDermato";
+    final String url = "$apiUrl/GetDermato/GetDermato";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -748,9 +748,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _neuroPostureLenght = "";
   Future<List<NeuroPostureModel>> getNeuroPosture() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -758,12 +758,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetNeuroPosture/GetNeuroPosture";
+    final String url = "$apiUrl/GetNeuroPosture/GetNeuroPosture";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -806,9 +806,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _neuroPostureLenghtDATA = "";
   Future<List<NeuroPostureModel>> getNeuroPostureDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -816,12 +816,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetNeuroPosture/GetNeuroPosture";
+    final String url = "$apiUrl/GetNeuroPosture/GetNeuroPosture";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -865,9 +865,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _dentalLenght = "";
   Future<List<DentalModel>> getDental() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -875,12 +875,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetDental/GetDental";
+    final String url = "$apiUrl/GetDental/GetDental";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -924,9 +924,9 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
   String _dentalLenghtDATA = "";
   Future<List<DentalModel>> getDentalDATA(String Date) async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
     debugPrint('Check Inserted _from ${widget.fromDate} ');
@@ -934,12 +934,12 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
     debugPrint('Check Inserted petId ${widget.petId} ');
     debugPrint('Check Inserted vetId ${widget.vetId} ');
     debugPrint('Check Inserted _RegistrationId ${_RegistrationId} ');
-    final String apiUrl = "$_API_Path/GetDental/GetDental";
+    final String url = "$apiUrl/GetDental/GetDental";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json',HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "VetId":widget.vetId,
@@ -1012,8 +1012,8 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
 
   void getPermission() async {
     print("getPermission");
-    Map<PermissionGroup, PermissionStatus> permissions =
-    await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    Map<Permission, PermissionStatus> permissions =
+    await [Permission.storage].request();
   }
 
 
@@ -1161,15 +1161,15 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
 
                                                     print("splitSOAPNote1 : $splitSOAPNote1");
                                                     print("splitSOAPNote2 : $splitSOAPNote2");
-                                                    String path =
-                                                    await ExtStorage.getExternalStoragePublicDirectory(
-                                                        ExtStorage.DIRECTORY_DOWNLOADS);
-                                                    //String fullPath = tempDir.path + "/boo2.pdf'";
-                                                    String fullPath = "$path/SOAPNote.$splitSOAPNote2";
-                                                    //String fullPath = "$path";
-                                                    print('full path ${fullPath}');
+                                                    // String path =
+                                                    // await ExtStorage.getExternalStoragePublicDirectory(
+                                                    //     ExtStorage.DIRECTORY_DOWNLOADS);
+                                                    // //String fullPath = tempDir.path + "/boo2.pdf'";
+                                                    // String fullPath = "$path/SOAPNote.$splitSOAPNote2";
+                                                    // //String fullPath = "$path";
+                                                    // print('full path ${fullPath}');
 
-                                                    download(dio, imgUrl, fullPath);
+                                                    // download(dio, imgUrl, fullPath);
                                                   },
                                                   icon: Icon(
                                                     Icons.file_download,

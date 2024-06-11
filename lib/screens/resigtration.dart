@@ -13,6 +13,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplanet/constant/colors.dart';
 import 'package:vetplanet/models/result_model.dart';
+import 'package:vetplanet/screens/dash.dart';
 import 'package:vetplanet/screens/verifyOTP.dart';
 import 'package:vetplanet/screens/verifyOTPAfterReg.dart';
 import 'package:vetplanet/transitions/slide_route.dart';
@@ -48,13 +49,13 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
   ResultModel _result;
 
   Future<ResultModel> createUser(String name, String contactNo, String emailId, String password, String currentAddress, String token, String imeiNo) async{
-    final String apiUrl = "http://sofistsolutions.in/VetPlanetAPPAPI/API/ClientRegistration/ClientRegistration";
+    final String url = "http://sofistsolutions.in/VetPlanetAPPAPI/API/ClientRegistration/ClientRegistration";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "UserName":name,
@@ -70,11 +71,24 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
           }
       ),
     );
-
+    print(json.encode(
+          {
+            "UserName":name,
+            "ContactNo":contactNo,
+            "Password":password,
+            "ADDRESS":currentAddress,
+            "AlternateContactNo":"",
+            "Email":emailId,
+            "DOB":"",
+            "UserType":"Vet Planet User",
+            "Token":token,
+            "ImeiNo":imeiNo
+          }
+      ),);
     debugPrint('Check Inserted 2 ');
     debugPrint('Check Inserted statusCode ${response.statusCode} ');
     if(response.statusCode == 200){
-
+      
       debugPrint('Check Inserted 3 : ${response.body}');
 
       final String responseString = response.body;
@@ -91,7 +105,7 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
   }
 
   Future<String> generateOTP( String contactNo, String otp) async{
-    final String apiUrl = "https://sms.bulkssms.com/submitsms.jsp?user=vetpln&key=1a0ce2bcedXX&mobile=$contactNo&message=OTP%20%3a$otp%0aVet Planet&senderid=ALRTSM&accusage=1";
+    final String url = "https://sms.bulkssms.com/submitsms.jsp?user=vetpln&key=1a0ce2bcedXX&mobile=$contactNo&message=OTP%20%3a$otp%0aVet Planet&senderid=ALRTSM&accusage=1";
     debugPrint('Check Inserted 1 ');
 
     final response = await http.get(Uri.parse(apiUrl));
@@ -110,7 +124,7 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(content:Text('User Already Exists', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
 
@@ -199,14 +213,14 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
   // }
 
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String tokenValue = 'Hello World!';
   String _platformImei = 'Unknown';
   String uniqueId = "Unknown";
 
   _registerOnFirebase() {
-    _firebaseMessaging.subscribeToTopic('all');
-    _firebaseMessaging.getToken().then((token)
+    FirebaseMessaging.instance.subscribeToTopic('all');
+    FirebaseMessaging.instance.getToken().then((token)
     {
       //=>    print(token)
       if (token != null){
@@ -252,6 +266,7 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
   final TextEditingController _controllerMobileNo = new TextEditingController();
   final TextEditingController _controllerPassword = new TextEditingController();
   final TextEditingController _controllerEmailId = new TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   var rndnumber="";
 
@@ -459,23 +474,69 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 15,),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 1),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  FittedBox(
+                                    fit:BoxFit.fitWidth,
+                                    child: Text(
+                                      "Password",
+                                      style: TextStyle(fontFamily: "Camphor",
+                                          fontWeight: FontWeight.w900, fontSize: 15,color: Colors.black),
+                                    ),
+                                  ),
+
+                                  TextFormField(
+                                    obscureText: true,
+                                     controller: _passwordController,
+                                    decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.black),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.black),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    showCursor: true,
+                                    style: TextStyle(fontFamily: "Camphor",
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                        fontSize: 16),
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'Password is Mandatory.';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            
                             SizedBox(
                               height: 15,
                             ),
                             Align(
                               alignment: Alignment.center,
                               child:
-                              InkWell(
-                                onTap: () async {
-                                  if (_formStateKey.currentState.validate()) {
+                              SizedBox(
+                                height: 40,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: ()async{
+                                    if (_formStateKey.currentState.validate()) {
                                     _formStateKey.currentState.save();
-
+                              
                                       setState(() {
                                         _isInAsyncCall = true;
-                                      });
-
+                                      }); 
+                              
                                     generateRandomNumber();
-
+                              
                                     final String OTP = "-";
                                     final String name = _name;
                                     final String contactNo = _contactNo;
@@ -487,7 +548,7 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
                                     final String token = tokenValue;
                                     final String imeiNo = _platformImei;
                                     final String randomOTP = rndnumber.toString();
-
+                              
                                     debugPrint('name : ${name}' );
                                     debugPrint('contactNo : ${contactNo}' );
                                     debugPrint('emailId : ${emailId}' );
@@ -498,61 +559,60 @@ class _RegistrartionPageState extends State<RegistrartionPage> {
                                     debugPrint('token : ${token}' );
                                     debugPrint('imeiNo : ${imeiNo}' );
                                     debugPrint('randomOTP : ${randomOTP}');
-
+                              
                                     _controllerName.clear();
                                     _controllerMobileNo.clear();
                                     _controllerPassword.clear();
                                     _controllerEmailId.clear();
                                     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VetRegistration()));
                                     // Navigator.push(context, SlideLeftRoute(page: VetRegistration()));
-
-                                    final ResultModel result = await createUser(name, contactNo, emailId, password, currentAddress, token, imeiNo);
+                              
+                                    final ResultModel result = await createUser(name, contactNo, emailId, _passwordController.text, currentAddress, token, imeiNo);
                                     debugPrint('Check Inserted result : $result');
                                     setState(() {
                                       _result = result;
                                     });
-
+                              
                                     if (_result.Result == "ADDED" ) {
-
-                                      generateOTP(contactNo, randomOTP);
-
+                              
+                                      // generateOTP(contactNo, randomOTP);
+                              
                                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      String API_Path = "http://sofistsolutions.in/VetPlanetAPPAPI/API";
-                                      prefs.setString('API_Path', API_Path);
+                                      prefs.setString('apiUrl', apiUrl);
                                       prefs.setInt('id', _result.Id);
                                       prefs.setString('contactNo', contactNo);
                                       prefs.setString('token', token);
                                       prefs.setString('imeiNo', imeiNo);
-
+                              
                                       debugPrint('SharedPreferences id: ${_result.Id}' );
                                       debugPrint('SharedPreferences contactNo: ${contactNo}' );
                                       debugPrint('SharedPreferences token: ${token}' );
                                       debugPrint('SharedPreferences imeiNo: ${imeiNo}' );
                                       _isInAsyncCall = false;
                                       approved(randomOTP,contactNo);
-
-                                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInPage()));
-                                      //  Navigator.pop(context);
-
+                              
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  DashPage()));
+                                    
                                     }
                                     else
                                     {
                                       setState(() {
                                         _isInAsyncCall = false;
                                       });
-
+                              
                                       debugPrint('**');
                                       _displaySnackBar(context);
                                     }
-
+                              
                                   }
-                                },
-                                child: Container(
-                                  height: 80,
-                                  alignment: Alignment.center,
-                                  child: Image.asset(
-                                    "assets/verify_r_btn.png",
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(appColorlight)
                                   ),
+                                  child: Text("Register")
                                 ),
                               ),
                             ),

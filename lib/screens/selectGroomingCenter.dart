@@ -41,18 +41,18 @@ class _SelectGroomingShopPageState extends State<SelectGroomingShopPage> {
 
   Future<List<GroomingShopModel>> getGrooming() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check Inserted _API_Path $_API_Path ');
+    debugPrint('Check Inserted apiUrl $apiUrl ');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId ');
 
 
-    final String apiUrl = "$_API_Path/GetShopListByPetGroomingId/GetShopListByPetGroomingId";
+    final String url = "$apiUrl/GetShopListByPetGroomingId/GetShopListByPetGroomingId";
 
     debugPrint('Check Inserted 1 ');
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PetGroomingId":widget.groomingId
@@ -100,19 +100,19 @@ class _SelectGroomingShopPageState extends State<SelectGroomingShopPage> {
 
   Future<ResultModel> deleteServices() async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeleteTempGroomingService/DeleteTempGroomingService";
+    final String url =  "$apiUrl/DeleteTempGroomingService/DeleteTempGroomingService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId
@@ -142,19 +142,19 @@ class _SelectGroomingShopPageState extends State<SelectGroomingShopPage> {
 
   Future<ResultModel> deletePreServices() async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
 
-    debugPrint('Check Inserted _API_Path $_API_Path');
+    debugPrint('Check Inserted apiUrl $apiUrl');
     debugPrint('Check Inserted _RegistrationId $_RegistrationId');
 
-    final String apiUrl =  "$_API_Path/DeletePreGroomingService/DeletePreGroomingService";
+    final String url =  "$apiUrl/DeletePreGroomingService/DeletePreGroomingService";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId"	:_RegistrationId,
@@ -221,14 +221,11 @@ class _SelectGroomingShopPageState extends State<SelectGroomingShopPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: appColorlight,
           flexibleSpace: (Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(2)),
-              gradient: LinearGradient(
-                colors: [appColor, appColor],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: appColorlight
             ),
           )),
           elevation: 0,

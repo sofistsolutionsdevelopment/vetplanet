@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,8 +9,9 @@ import 'package:vetplanet/screens/dash.dart';
 import 'package:vetplanet/screens/login.dart';
 
 void main() async {
-  WidgetsFlutterBinding().ensureVisualUpdate();
+  WidgetsFlutterBinding.ensureInitialized();
   Widget _defaultPage = LogInPage();
+  await Firebase.initializeApp();
 
   ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
@@ -31,7 +33,7 @@ void main() async {
   return runApp(
     MaterialApp(
       home: _defaultPage,
-      title: 'Vet Planet',
+      title: 'Planet Of Pets',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
     ),

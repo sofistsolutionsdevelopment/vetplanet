@@ -12,7 +12,7 @@
     <item>
         <bitmap
             android:gravity="fill"
-            android:src="@drawable/splash"
+            android:src="@drawable/poplogo"
             />
     </item>
 </layer-list>

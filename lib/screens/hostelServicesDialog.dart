@@ -33,15 +33,15 @@ class _HostelServicesDialogState extends State<HostelServicesDialog> {
   String _ServiceLenght = "";
   Future<List<HostelServicesModel>> getService() async {
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/GetHostelServices/GetHostelServices";
+    
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/GetHostelServices/GetHostelServices";
 
     debugPrint('Check Inserted 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "HostelId":widget.hostelId
@@ -96,19 +96,19 @@ class _HostelServicesDialogState extends State<HostelServicesDialog> {
 
   Future<ResultModel> saveTempPetService(String checkServices) async{
     final _prefs = await SharedPreferences.getInstance();
-    String _API_Path = _prefs.getString('API_Path');
+    
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check saveTempPetService _API_Path $_API_Path ');
+    debugPrint('Check saveTempPetService apiUrl $apiUrl ');
     debugPrint('Check saveTempPetService _RegistrationId $_RegistrationId ');
     debugPrint('Check saveTempPetService patientPetId ${widget.patientPetId} ');
     debugPrint('Check saveTempPetService checkServices $checkServices');
-    final String apiUrl = "$_API_Path/SavePreHostelService/SavePreHostelService";
+    final String url = "$apiUrl/SavePreHostelService/SavePreHostelService";
 
     debugPrint('Check saveTempPetService 1 ');
 
     var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI' },
+      Uri.parse(url),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: bearerToken },
       body: json.encode(
           {
             "PatientId":_RegistrationId,
@@ -235,7 +235,7 @@ class _HostelServicesDialogState extends State<HostelServicesDialog> {
                                                         //title: Text(_resultServices[index].Service,style: TextStyle(fontSize:16, fontFamily: "Camphor",
                                                         // fontWeight: FontWeight.w700,color: Colors.black),),
                                                         value: _resultServices[index].IsChecked,
-                                                        activeColor: appColor,
+                                                        activeColor: appColorlight,
                                                         checkColor: Colors.white,
                                                         onChanged: (val) {
                                                           setState(() {
@@ -324,7 +324,7 @@ class _HostelServicesDialogState extends State<HostelServicesDialog> {
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text('Cancel', style: TextStyle(
-                  color: appColor, fontSize: 16, fontFamily: "Camphor",
+                  color: appColorlight, fontSize: 16, fontFamily: "Camphor",
                   fontWeight: FontWeight.w900,),),
               ),
               onPressed: () {
@@ -340,7 +340,7 @@ class _HostelServicesDialogState extends State<HostelServicesDialog> {
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text('Confirm', style: TextStyle(
-                    color: appColor, fontSize: 16, fontFamily: "Camphor",
+                    color: appColorlight, fontSize: 16, fontFamily: "Camphor",
                     fontWeight: FontWeight.w900,),),
                 ),
                 onPressed: () async {

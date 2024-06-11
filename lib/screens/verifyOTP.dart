@@ -38,12 +38,12 @@ class _VerifyOTPPageState extends State<VerifyOTPPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   _SnackBar(BuildContext context) {
     final snackBar = SnackBar(content:Text('Invalid OTP.', style: TextStyle(fontSize: 20),));
-    _globalKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
 
   Future<String> generateOTP( String contactNo, String otp) async{
-    final String apiUrl = "https://sms.bulkssms.com/submitsms.jsp?user=vetpln&key=1a0ce2bcedXX&mobile=$contactNo&message=OTP%20%3a$otp%0aVet Planet&senderid=ALRTSM&accusage=1";
+    final String url = "https://sms.bulkssms.com/submitsms.jsp?user=vetpln&key=1a0ce2bcedXX&mobile=$contactNo&message=OTP%20%3a$otp%0aVet Planet&senderid=ALRTSM&accusage=1";
     debugPrint('Check Inserted 1 ');
 
     final response = await http.get(Uri.parse(apiUrl));

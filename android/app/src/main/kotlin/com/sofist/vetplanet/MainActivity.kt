@@ -1,4 +1,4 @@
-package com.sofist.vetplanet
+package com.sofist.planetofpets
 
 import io.flutter.embedding.android.FlutterActivity
 

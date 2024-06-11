@@ -50,41 +50,19 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String _message = '';
   final List<Message> messages = [];
 
   void getMessage() {
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        final notification = message['notification'];
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      final notification = message.notification;
         setState(() {
           messages.add(Message(
-              title: notification['title'], body: notification['body']));
+              title: notification.title, body: notification.body));
         });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-
-        final notification = message['data'];
-        setState(() {
-          messages.add(Message(
-            title: '${notification['title']}',
-            body: '${notification['body']}',
-          ));
-          print ("GETMEASSGAE onLaunch : 1");
-          print ("GETMEASSGAE onLaunch : 2");
-        });
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ViewAppointmentPage()));
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    });
   }
 
   @override
@@ -110,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 100,
               alignment: Alignment.center,
               child: Image.asset(
-                "assets/splashLogo.png",
+                "assets/logo/POPLogo.png",
               ),
             ),
             SizedBox(height: 40),

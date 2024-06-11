@@ -9,25 +9,25 @@ import '../models/productcategorylist.dart';
 import '../models/products.dart';
 import '../models/shoplist.dart';
 import '../models/specieslist.dart';
+import 'package:vetplanet/constant/colors.dart';
 
 class ShopController {
-  String _API_Path = "http://sofistsolutions.in/POP";
-
+  
   Future<List<Specieslist>> getSpeciesList(var shopid) async {
     final _prefs = await SharedPreferences.getInstance();
-    //String _API_Path = "http://sofistsolutions.in/POP";
+    //String apiUrl = "http://sofistsolutions.in/POP";
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/api/Master/GetSpeciesList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/api/Master/GetSpeciesList";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
    var data = {"ShopId": shopid};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        // HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
@@ -51,19 +51,19 @@ class ShopController {
   
   Future<List<ProductCategoryList>> getProductCategoryList(var shopid,var speciesid) async {
     final _prefs = await SharedPreferences.getInstance();
-    //String _API_Path = "http://sofistsolutions.in/POP";
+    //String apiUrl = "http://sofistsolutions.in/POP";
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/api/Master/GetProductCategoryList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/api/Master/GetProductCategoryList";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
    var data = {"ShopId": shopid,"speciesId":speciesid};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        //HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        //HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
@@ -87,19 +87,19 @@ class ShopController {
   
   Future<List<ShopList>> getShopList(var lat, var long) async {
     final _prefs = await SharedPreferences.getInstance();
-    //String _API_Path = "http://sofistsolutions.in/POP";
+    //String apiUrl = "http://sofistsolutions.in/POP";
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/api/Master/GetShopList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/api/Master/GetShopList";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
     var data = {"Longitude": "$lat", "Latitude": "$long"};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        // HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
@@ -125,17 +125,17 @@ class ShopController {
   //   final _prefs = await SharedPreferences.getInstance();
 
   //   String _RegistrationId = _prefs.getInt('id').toString();
-  //   debugPrint('Check getProfile _API_Path $_API_Path ');
-  //   final String apiUrl = "$_API_Path/api/Master/GetProductList";
+  //   debugPrint('Check getProfile apiUrl $apiUrl ');
+  //   final String url = "$apiUrl/api/Master/GetProductList";
 
   //   debugPrint('Check Inserted 1 ' + apiUrl);
   //   var data = {"ShopId": shopid};
 
   //   var response = await http.post(
-  //     Uri.parse(apiUrl),
+  //     Uri.parse(url),
   //     headers: {
   //       HttpHeaders.contentTypeHeader: 'application/json'
-  //       // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+  //       // HttpHeaders.authorizationHeader: bearerToken
   //     },
   //     body: json.encode(data),
   //   );
@@ -157,18 +157,18 @@ class ShopController {
     final _prefs = await SharedPreferences.getInstance();
 
     String _RegistrationId = _prefs.getInt('id').toString();
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/api/Master/GetSubCatgWiseProdList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/api/Master/GetSubCatgWiseProdList";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
     var data = {"ShopId": shopid, "PCId":pcid,
     "speciesId":speciesid,};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        // HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
@@ -190,17 +190,17 @@ class ShopController {
     final _prefs = await SharedPreferences.getInstance();
 
    
-    debugPrint('Check getProfile _API_Path $_API_Path ');
-    final String apiUrl = "$_API_Path/api/Master/GetShopWiseCatgList";
+    debugPrint('Check getProfile apiUrl $apiUrl ');
+    final String url = "$apiUrl/api/Master/GetShopWiseCatgList";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
     var data = {"ShopId": shopid};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        // HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
@@ -218,16 +218,16 @@ class ShopController {
     }
   }
   Future<List<ProductDetail>> GetProductDetails(var productid) async {
-    final String apiUrl = "$_API_Path/api/Master/GetProductDetails";
+    final String url = "$apiUrl/api/Master/GetProductDetails";
 
     debugPrint('Check Inserted 1 ' + apiUrl);
     var data = {"ProductId": productid};
 
     var response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(url),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
-        // HttpHeaders.authorizationHeader: 'bearer VA5kBnSw50cbuJ4YoAVkl4XyFTA312fRtKF4GxlmkUcl3PQJBKvvtogvT_0syd6ZtsZ4-1zFK6_liq5dQpyMq2tOA7vCtZ332qal7LGyBxBvv4mtD461lwGhNtprYd8PyIR40bBsoBc7nMElIniHJXAu1V04eO5c7sNLHOGypeG70Zn06yQr-0i_eFbsCRg6kMWjkao3RZwDfXVra5JQ5I7Pr1CbSgYez6rbYLMbH2LL6K8VcpmUvs45WpLe4UjPpChygW96LCoxVh7YtNa74n1Bje4sDdGLZowZJWwe7F9P7ijy1nVyw_v5K-8MqzlI'
+        // HttpHeaders.authorizationHeader: bearerToken
       },
       body: json.encode(data),
     );
